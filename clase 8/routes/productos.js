@@ -9,7 +9,11 @@ class Contenedor{
         .then(data=>{
             let prods = JSON.parse(data)
             if(!obj.id){
-                obj.id = prods.length >0? prods.length + 1 : 1
+                let flag = 0
+                prods.forEach(e=>{
+                    e.id>flag?flag=e.id:null
+                })
+                obj.id = flag >0? flag + 1 : 1
             }
             console.log('id asignado: ',obj.id)
             prods.push(obj)
