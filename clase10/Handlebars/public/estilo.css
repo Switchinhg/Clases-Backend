@@ -1,0 +1,85 @@
+body{
+    background-color: white;
+}
+.productosContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.producto{
+    display: flex;
+    width: 800px;
+    box-shadow: 0 0 5px black;
+}
+.thumb img{
+    height: 200px;
+    width: 150px;
+}
+
+.nombreyprecio{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    flex-grow: 1;
+    padding: 0 1rem;
+}
+.decrip{
+    width: 500px;
+    align-self: center;
+}
+
+/* Form */
+
+.formWrapper, .formulario{
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    margin: 0 auto;
+}
+.formWrapper{
+    gap: 1rem;
+}
+.formulario{
+    gap: 1rem;
+}
+.formulario input{
+    height: 40px;
+}
+.irPordWrap{
+    text-align: center;
+    margin: 2rem;
+
+    
+}
+.formTitulo h1{
+    text-align: center;
+}
+.irProd{
+        color:black;
+        text-decoration: none;
+        padding: 0.5rem  1rem;
+        border-radius: 5px;
+        box-shadow: 0 0 1px gray;
+}
+.irProd:hover{
+    background-color: rgb(63, 167, 252);
+}
+input[type=submit]{
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 5px black;
+
+
+}
+input{
+    outline: none;
+    padding: 0 0.5rem;
+}
+input[type=submit]:hover{
+    box-shadow: 0 0 10px black;
+}

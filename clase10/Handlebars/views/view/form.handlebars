@@ -1,0 +1,13 @@
+    <div class="formWrapper">
+
+    <div class="formTitulo">
+        <h1>Ingreso de productos</h1>
+    </div>
+    <form action="/productos" method="post" class="formulario">
+        <input type="text" name="name" id="name" placeholder="Nombre" required>
+        <input type="number" name="price" id="price" min="0" step="any" placeholder="Precio" required>
+        <input type="text" name="description" id="description" placeholder="Descripción" required>
+        <input type="text" name="thumbnail" id="thumbnail" placeholder="Imagen" required>
+        <input type="submit" value="Enviar">
+    </form>
+
