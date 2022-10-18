@@ -1,0 +1,27 @@
+<div class="productosContainer">
+
+    <% data.forEach(e=>{ %>
+
+        <div class="producto">
+            <div class="thumb">
+                <img src="<%= e.thumbnail %>" alt="">
+            </div>
+            <div class="nombreyprecio">
+                <div> <%= e.name %> </div>
+                <br>
+                <%- include('../partials/prices', {e})  %>
+            </div>
+            <div class="decrip">
+                <div> <%= e.description %> </div>
+            </div>
+        </div>
+        <% }) %>
+
+
+
+        <% if ( !data.length){ %>
+            <h1>no hay productos</h1>
+        <% } %>
+
+</div>
+

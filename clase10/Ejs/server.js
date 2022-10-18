@@ -1,6 +1,5 @@
 const express = require('express')
 const path = require('path');
-const { create } = require('express-handlebars');
 
 
 const app = express()
@@ -16,20 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/productos', routerProds)
 
 
-/* Form */
+app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
-    res.render('view/form')
+    res.render('./layouts/index')
 });
 
-
-
-
-const hbs = create({});
-app.engine('handlebars', hbs.engine);
-
-app.set('view engine', 'handlebars');
-
-app.set('views', './views');
 
 app.use(express.static('public'))

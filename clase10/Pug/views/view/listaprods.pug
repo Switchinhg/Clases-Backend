@@ -1,5 +1,8 @@
 div(class='productosContainer')
 
+    if !data.length
+        h1 No hay productos
+
     each val in data
         div(class='producto')
             div(class="thumb")
