@@ -1,0 +1,12 @@
+div(class='productosContainer')
+
+    each val in data
+        div(class='producto')
+            div(class="thumb")
+                img(src=val.thumbnail, alt="prodimg") 
+            div(class='nombreyprecio')
+                div=val.name
+                br
+                include ../partials/prices.pug 
+            div(class='decrip')
+                div=val.description 
