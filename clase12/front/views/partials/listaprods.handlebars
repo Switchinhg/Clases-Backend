@@ -1,0 +1,20 @@
+    <div class="productosContainer">
+        {{#each data}}
+        <div class="producto">
+            <div class="thumb">
+                <img src="{{this.thumbnail}}" alt="">
+            </div>
+            <div class="nombreyprecio">
+                {{this.name}} <br>
+                {{>prices this}}
+            </div>
+            <div class="decrip">
+                {{this.description}}
+            </div>
+        </div>
+        {{/each}}
+        {{#if data}}
+            {{else}}
+            <h1>No hay productos</h1>
+        {{/if}}
+    </div>
