@@ -6,21 +6,34 @@ class Contenedor{
 
         /* Guarda producto */
     }async save(obj){
-        obj.price = Number(obj.price)
         await fs.promises.readFile(this.archivo, 'utf-8')
         .then(data=>{
-            let prods = JSON.parse(data)
+            /* 
+            
+            obj = [{
+                "id": 1,
+                "userId": 2,
+                "productsIds": [2, 5, 87, 6, 3, 1]
+            }]
+
+            */
+            /* Lista del archivo carts.txt */
+            let carts = JSON.parse(data)
+
             if(!obj.id){
                 let flag = 0
-                prods.forEach(e=>{
+                // Math.max(...data.map(o => o.y)) dice data.map is not a function
+                carts.forEach(e=>{
                     e.id>flag?flag=e.id:null
                 })
                 obj.id = flag >0? flag + 1 : 1
             }
-            prods.push(obj)
-            fs.promises.writeFile(this.archivo, JSON.stringify(prods))   
+            carts.push(obj)
+            fs.promises.writeFile(this.archivo, JSON.stringify(carts))   
+            return obj.id
         })
         .catch(e=> console.log('error', e))
+        return {"cartID": obj.id}
     }
 
         /* Edita el producto */
@@ -37,10 +50,10 @@ class Contenedor{
             }
 
 
-    // Mostrar Todos los Productos
+    // Mostrar Todos los carritos GET
     async getAll(){
-        let productos = await fs.promises.readFile(this.archivo, 'utf-8')
-        return JSON.parse(productos)
+        let carts = await fs.promises.readFile(this.archivo, 'utf-8')
+        return JSON.parse(carts)
     }
     
     /* Borrar prod por id */
