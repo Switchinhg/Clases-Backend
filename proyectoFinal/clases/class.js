@@ -53,19 +53,20 @@ class Contenedor{
     
     /* Borrar prod por id */
     async deleteById(id){
+        let res
         await fs.promises.readFile(this.archivo, 'utf-8')
         .then(data=>{
             let prods = JSON.parse(data)
             for (const i of prods) {
-
                 if(i.id===id){
-                    console.log(i)
                     prods.splice(prods.indexOf(i),1)
                     fs.promises.writeFile(this.archivo, JSON.stringify(prods))
+                    return res =  {"success": "producto editado"}
                 }
             }
         })
         .catch(e=>console.log('error', e))
+        return res? res : {"error": "No se pudo editar el producto"}
 }}
 
 module.exports = Contenedor
