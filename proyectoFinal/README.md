@@ -128,7 +128,7 @@ No admin:
   "error": "usuario no permitido"
 }
 ```
-### Ruta `/api/cart`
+## Ruta `/api/cart`
 
 ### **GET:**
 ` /{id}/productos` 
