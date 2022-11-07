@@ -58,10 +58,10 @@ class Contenedor{
         .then(data=>{
             let prods = JSON.parse(data)
             for (const i of prods) {
-                if(i.id===id){
+                if(i.id===id.id){
                     prods.splice(prods.indexOf(i),1)
                     fs.promises.writeFile(this.archivo, JSON.stringify(prods))
-                    return res =  {"success": "producto editado"}
+                    return res =  {"success": "producto borrado"}
                 }
             }
         })

@@ -4,6 +4,22 @@ const cart = new Contenedor('./db/carts.txt')
 
 const router = require('express').Router();
 
+
+const usuarios = require('../usuarios/usuarios')
+/* Middleware para saber si es admin */
+function isAdmin (req,res,next){
+    
+    usuarios.isAdmin(req.body.key)
+        .then(data=>{
+            if (data === true){
+                next()
+            }
+            else{
+                res.json({error:"usuario no permitido"})
+            }
+        })
+}
+
 /* crea carrito y devuelve el id */
 router.post('/cart', (req,res)=>{
     const carrito = req.body
@@ -30,6 +46,10 @@ router.post('/cart/:id/productos', (req,res)=>{
 router.delete('/cart/:id/productos/:id_prod', (req, res)=>{
     const ids = {id: Number(req.params.id), idProd: Number(req.params.id_prod)}
     cart.delProdId(ids).then(e=> res.json(e))
+})
+
+router.get('/cart/admin',isAdmin, (req,res)=>{
+    cart.getAll().then(resp=> res.json(resp))
 })
 
 

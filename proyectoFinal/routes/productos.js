@@ -26,10 +26,9 @@ router.get('/productos/:id?', (req,res)=>{
         productos.getAll().then(resp=>{
             resp.forEach(element => {
                 if(element.id === Number(req.params.id)){
-                    res.send(element)
+                    res.json(element)
                 }
             })
-            res.json({error:'producto no encontrado'})
         })
     }else{
         productos.getAll().then(resp=> res.json(resp))

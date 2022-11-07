@@ -43,16 +43,13 @@ class Contenedor{
                 .then(resp=>{
                     resp.forEach(element => {
                         if(element.id === obj.id){
-                            if(obj.prod){
-
-                                element.productsIds.push(obj.prod)
-                                fs.promises.writeFile(this.archivo, JSON.stringify(resp))
-                                return hecho = {"success": "carrito editado con exito"}
+                                for (const i of obj.prod) {     
+    
+                                    element.productsIds.push(i)
+                                    fs.promises.writeFile(this.archivo, JSON.stringify(resp))
+                                    // return hecho = {"success": "carrito editado con exito"}
                             }
-                            else{
-                                return hecho= {"error" : "Id de producto inexistente"}
                             }
-                        }
                     })
                 })
                 .catch(e=>console.log(e))
