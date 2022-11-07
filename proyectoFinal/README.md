@@ -168,12 +168,12 @@ POST necesita el objeto del carrito en el body
 
 ### **POST:** (agregar producto al carrito)
 ` api/cart/{id}/productos` 
-POST necesita el id del carrito en el parametro y el id dle producto a agregar en el body
+POST necesita el id del carrito en el parametro y los ids de productos a agregar en el body
 
 **ej:** 
 ```
 {
-  "prod": 8
+  "prod": [8]  / tambien [6,4,3,76,6,4]
 }
 ```
 **respuesta:**
