@@ -37,21 +37,23 @@ class Contenedor{
 
         /* Edita prods en carrito */
         async editCart(obj){
-            await fs.promises.readFile(this.archivo, 'utf-8')
-                .then(data=> JSON.parse(data))
-                .then(resp=>{
-                    resp.forEach(element => {
-                        if(element.id === obj.id){
-                            console.log(obj.prod)
-                                for (const i of obj.prod) {     
-                                    element.productsIds.push(i)
-                                }
-                            }
-                        })
-                        fs.promises.writeFile(this.archivo, JSON.stringify(resp))
-                })
-                .catch(e=>console.log(e))
+            try{
+                const carritos = await this.getAll()
+                const indexCart = carritos.findIndex(e => e.id == obj.id)
+                if(indexCart == -1)return null
+								
+                let carritoFinal = carritos[indexCart]
+                carritoFinal.productsIds = [
+                  ...carritos[indexCart].productsIds,
+									...obj.prod
+								]
+                carritos.splice(indexCart, 1, carritoFinal)
+                fs.promises.writeFile(this.archivo, JSON.stringify(carritos))   
+                
+            }catch(e){
+                console.log(e)
             }
+        }
 
 
     // Mostrar Todos los carritos GET

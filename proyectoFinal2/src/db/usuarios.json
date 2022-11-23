@@ -1,0 +1,4 @@
+[
+    {"name": "Santiago","rol": "Admin","key": "testKEY", "userID":1},
+    {"name": "Cynthia","rol": "Usuario","key": "elau" ,"userID": 2}
+]
