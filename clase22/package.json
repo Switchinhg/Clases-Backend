@@ -8,6 +8,7 @@
     "sqlite3": "^5.1.2"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.6.0"
+    "@faker-js/faker": "^7.6.0",
+    "normalizr": "^3.6.2"
   }
 }
