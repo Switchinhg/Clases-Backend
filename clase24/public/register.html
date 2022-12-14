@@ -2,17 +2,16 @@
 <html lang="es-UY">
 <head>
     <meta charset="UTF-8">
-    <title>Login de usuario</title>
+    <title>Registro de usuario</title>
     <link rel="stylesheet" href="./estilos.css">
-    <script src="./redirectbutton.js" defer></script>
 </head>
 <body>
     <div class="container">
         <div >
-            <h2 >Ingreso de usuario</h2>
+            <h2 >Registro de usuario</h2>
         </div>
 
-        <form class="form" method="post" action="/signin">
+        <form class="form" method="post" action="/signup">
             <div class="formInner">
                 <label for="username">Usuario</label>
                 <input type="text" class="input" id="username" name="username" placeholder="Nombre de usuario">
@@ -21,9 +20,9 @@
                 <label for="password">Contraseña</label>
                 <input type="password" class="input" id="password" name="password" placeholder="Contraseña">
             </div>
-            <button class="btnSubmit" type="submit">Ingresar</button>
+            <button class="btnSubmit" type="submit">Registrarse</button>
         </form>
-        <a href="/register">No tenes cuenta?</a>
+            <a href="/login">Ya tenes cuenta?</a>
     </div>
 </body>
 </html>

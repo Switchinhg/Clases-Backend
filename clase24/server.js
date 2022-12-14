@@ -2,17 +2,18 @@ require("dotenv").config()
 // Const y imports
 const express = require("express")
 const app = express()
-const auth = require("./auth").Authentication
+const auth = require("./auth")
 const handlebars = require("express-handlebars")
 const session = require("express-session")
 const MongoStore = require("connect-mongo");
+const passport = require("passport")
 
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 8080
 
 app.use(session({
     store: new MongoStore({
         mongoUrl: `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.CLUSTER_URI}/${process.env.DATABASE_NAME}`,
-        ttl: 60 // 1 minuto
+        ttl:  30 // 10 minuto
     }),
     secret: "secretoJiji",
     resave: "true",
@@ -34,30 +35,39 @@ app.set("view engine", "hbs")
 app.set("views", "views")
 
 // Sign in and signout
-app.post("/signin", auth)
+app.post("/signin", passport.authenticate('login', {failureRedirect: '/error'}), function (req,res){
+  res.redirect('/');
+})
 
 app.post("/signout", (req, res) => {
-    const username = req.session.user
+    const username = req.session.passport?.user?.username
     req.session.destroy( err => {
         if (!err) res.render("logout", {username: username})
         else res.send({status: "Error al desloguear", body: err})
     })
 })
 
+app.post("/signup", passport.authenticate('register', {failureRedirect: '/error'}), function (req,res){
+  res.redirect('/');
+})
+
 // Endpoints
 app.get("/", (req, res) => {
-    req.session.user ? res.render("index", {username: req.session.user, admin: req.session.admin}) : res.redirect("/login")
+    req.session.passport?.user? res.render("index", {username: req.session.passport.user.username , admin: req.session.passport.user.role }) : res.redirect("/login")
 })
 
 app.get("/login", (req, res) => {
     res.sendFile(__dirname + "/public/login.html")
 })
+app.get("/register", (req, res) => {
+    res.sendFile(__dirname + "/public/register.html")
+})
+
 
 // 404 Error
 app.use((req, res) => {
     const response = {
-        error: -2,
-        description: `${req.url} ${req.method} no implementado`
+        description: "error"
     }
     res.status(404).json(response)
 })

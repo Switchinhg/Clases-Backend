@@ -1,3 +1,6 @@
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+
 const users = [
     {
         username: "swicho",
@@ -10,24 +13,35 @@ const users = [
         role: "admin"
     }
 ]
-
-const Authentication = (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
+/* Strategies */
+passport.use('login', new LocalStrategy({
+    passReqToCallback: true,
+  }, function(req, username, password, next) {
     const user = users.find((obj) => obj.username === username && obj.password === password)
-    if (user) {
-        req.session.user = user.username
-        req.session.admin = user.role === "admin"
-        res.redirect('/')
-    } else {
-        const response = {
-            error: -1,
-            description: `${req.path} no autorizado.`
-        }
-        res.status(401).json(response)
-    }
-}
 
-module.exports = {
-    Authentication: Authentication
-}
+    if( user){
+        return next(null, user);
+    } else {
+        return next(null, false)
+    }
+  })
+);
+
+passport.use('register', new LocalStrategy({
+    passReqToCallback: true,
+  }, function(req, username, password, next) {
+    const usuario = users.find((obj) => obj.username === username )
+
+    if(usuario) {
+      return(null, false);
+    }else{
+      const user = {username,password,role:'user'}
+      users.push(user)
+      return next(null, user);
+    }
+}));
+
+
+passport.serializeUser(function(user, next) {
+    next(null, user);
+  });
