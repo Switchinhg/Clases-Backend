@@ -8,6 +8,9 @@ const session = require("express-session")
 const MongoStore = require("connect-mongo");
 const passport = require("passport")
 
+/*  */
+const router = require('./router/randomRouter.js');
+
 const PORT = process.env.PORT || 8080
 
 app.use(session({
@@ -62,6 +65,35 @@ app.get("/login", (req, res) => {
 app.get("/register", (req, res) => {
     res.sendFile(__dirname + "/public/register.html")
 })
+
+
+app.get('/info',(req,res)=>{
+        /* Ags entrada, SO, version Node */
+        const args = process.argv
+        const sistemaOperativo = process.platform
+        const VersionNode = process.version
+
+        /* Memoria total y ruta */
+        const memoriaTotal = process.memoryUsage().rss
+        const ruitaEjecucion = process.cwd()
+        /* id del proceso y dir */
+        const idProceso = process.pid
+        const carpetaProyecto = __dirname
+
+        res.render('process',{
+            args,
+            sistemaOperativo,
+            VersionNode,
+            memoriaTotal,
+            ruitaEjecucion,
+            idProceso,
+            carpetaProyecto,
+        })
+})
+
+
+app.use('/api', router)
+
 
 
 // 404 Error
