@@ -11,7 +11,50 @@ const passport = require("passport")
 /*  */
 const router = require('./router/randomRouter.js');
 
-const PORT = process.env.PORT || 8080
+let PORT = process.argv[2]
+
+if(!isNaN(process.argv[2])){
+  PORT = process.argv[2]
+}else if (!isNaN(process.argv[4])){
+  PORT = process.argv[4]
+}else{
+  PORT = 8080
+}
+
+let mode = 'fork';
+
+    // Ejecutar el servidor en modo fork o cluster
+for (let i = 0; i < process.argv.length; i++) {
+    if (process.argv[i] === '--mode') {
+      mode = process.argv[i + 1];
+      break;
+    }
+  }
+  
+  if (mode === 'cluster') {
+
+    const cluster = require('cluster');
+
+    if (cluster.isMaster) {
+      // Crear varias instancias del servidor y distribuir las conexiones entrantes entre ellas
+      const numCPUs = require('os').cpus().length;
+      console.log(numCPUs)
+      for (let i = 0; i < numCPUs; i++) {
+          cluster.fork();
+          console.log('foor')
+      }
+    }
+    else {
+        // Ejecutar el servidor en una instancia
+      
+        app.listen(8080, () => {
+          console.log(`Servidor escuchando en el puerto ${PORT}`);
+        });
+      }
+  }
+
+
+
 
 app.use(session({
     store: new MongoStore({
@@ -56,7 +99,7 @@ app.post("/signup", passport.authenticate('register', {failureRedirect: '/error'
 
 // Endpoints
 app.get("/", (req, res) => {
-    req.session.passport?.user? res.render("index", {username: req.session.passport.user.username , admin: req.session.passport.user.role }) : res.redirect("/login")
+    req.session.passport?.user? res.render("index", {username: req.session.passport.user.username , admin: req.session.passport.user.role,PORT:PORT }) : res.redirect("/login")
 })
 
 app.get("/login", (req, res) => {
@@ -104,7 +147,9 @@ app.use((req, res) => {
     res.status(404).json(response)
 })
 
-// Server start
-const server = app.listen(PORT, () => {
+if(mode === 'fork'){
+
+  const server = app.listen(PORT, () => {
     console.log(`server on en: ${PORT}`)
-})
+  })
+}
