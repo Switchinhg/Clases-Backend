@@ -7,6 +7,24 @@ const handlebars = require("express-handlebars")
 const session = require("express-session")
 const MongoStore = require("connect-mongo");
 const passport = require("passport")
+/* Compression */
+const compression = require('compression');
+/* Winston */
+const winston = require('winston');
+ /* fs */
+const fs = require('fs');
+
+const logger = winston.createLogger({
+  transports: [new winston.transports.Console()],
+});
+
+/* Request recived */
+
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url}`);
+  next();
+});
+
 
 /*  */
 const router = require('./router/randomRouter.js');
@@ -68,6 +86,7 @@ app.use(session({
 app.use(express.static("public"))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(compression())
 
 // Handlebars configuration
 const hbs = handlebars.create({
@@ -123,6 +142,18 @@ app.get('/info',(req,res)=>{
         const idProceso = process.pid
         const carpetaProyecto = __dirname
 
+        const profileData = fs.readFileSync('./procesado.json', 'utf8', (err, data) => {
+          console.log(data)
+          if (err) {
+              res.status(500).send('Error reading profile data');
+          } 
+            return JSON.parse(data);
+              // logic to display profile data
+
+        }
+
+          )
+
         res.render('process',{
             args,
             sistemaOperativo,
@@ -131,7 +162,9 @@ app.get('/info',(req,res)=>{
             ruitaEjecucion,
             idProceso,
             carpetaProyecto,
+            profileData,
         })
+
 })
 
 
@@ -144,7 +177,9 @@ app.use((req, res) => {
     const response = {
         description: "error"
     }
+    logger.warn(`${req.method} ${req.url} - Route not found`);
     res.status(404).json(response)
+
 })
 
 if(mode === 'fork'){
